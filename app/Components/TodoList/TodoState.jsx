@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react';
 import TodoInput from "./TodoInput"
+import TodoDisplayed from "./TodoDisplayed"
 export default function TodoState() {
 
 const [todoState, setTodoState] = useState([])
@@ -14,7 +15,7 @@ const getData = async()=>{
   const res = await data.json()
  
 setTodoState(res)
-console.log('data',todoState)
+console.log('datdda',res)
 
 }
 
@@ -34,10 +35,10 @@ const data = fetch('/api/node',{
 
 useEffect(()=>{
   getData()
-   console.log('dataafter',todoState)
+  
 },[])
 
-
+ console.log('dataafter',todoState)
 const getTodoInput = (e)=>{
   console.log(e.target.value)
   settodoDetails(prev => ({...prev,getFirstInput:e.target.value}))
@@ -46,7 +47,7 @@ const getTodoInput = (e)=>{
 
 
 const submitTodo=()=>{
-  setTodoState(prev =>({...prev, id:Date.now(),name:todoDetails.getFirstInput}))
+  setTodoState(prev =>[...prev, {id:Date.now(),name:todoDetails.getFirstInput} ])
   sendData( Date.now(),todoDetails.getFirstInput)
 
 }
@@ -55,6 +56,8 @@ const submitTodo=()=>{
       <TodoInput 
       getTodoInput={getTodoInput}
       submitTodo={submitTodo}/>
+
+      <TodoDisplayed data={todoState}/>
     </div>
   );
 }
