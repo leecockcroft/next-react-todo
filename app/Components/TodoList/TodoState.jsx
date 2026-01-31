@@ -21,6 +21,20 @@ setTodoState(res)
 
 }
 
+const editData =async (todoId,todoName)=>{
+  
+  const data= await fetch(`/api/node/${todoId}`,{
+    method:'PUT',
+     headers:{
+    "Content-Type": "application/json"
+  },
+  body:JSON.stringify({id:todoId,name:todoName})
+})
+
+
+
+}
+
 const sendData = async (todoid,info)=>{
 
 const data = fetch('/api/node',{
@@ -30,6 +44,16 @@ const data = fetch('/api/node',{
   },
   body:JSON.stringify({id:todoid,name:info})
 })
+
+
+
+}
+const deleteData = async (id)=>{
+  const data = fetch(`/api/node/${id}`,{
+    method:'DELETE'
+    
+})
+
 
 
 
@@ -83,9 +107,21 @@ item.id===id ? {...item, name:todoDetails.editInput,edit:false} : item
 
 )))
 
-console.log('done')
+editData(id,todoDetails.editInput)
 }
 
+
+// delete
+
+const deleteTodo = (id)=>{
+console.log(todoState)
+const deleteItem = todoState.filter(item => item.id !==id)
+console.log(id,deleteItem)
+setTodoState(deleteItem)
+deleteData(id)
+
+
+}
 
   return (
     <div>
@@ -97,7 +133,8 @@ console.log('done')
        data={todoState}
        editToDoItem={editToDoItem}
        editToDOItemText={editToDOItemText}
-       saveEditedToDo={saveEditedToDo}/>
+       saveEditedToDo={saveEditedToDo}
+       deleteTodo={deleteTodo}/>
     </div>
   );
 }

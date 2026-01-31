@@ -1,6 +1,11 @@
 import EditModeLi from "./EditModeLi"
 
-export default function TodoDisplayed({data,editToDoItem,editToDOItemText,saveEditedToDo}) {
+export default function TodoDisplayed({
+  data,
+  editToDoItem,
+  editToDOItemText,
+  saveEditedToDo,
+deleteTodo}) {
   return (
     <main>
         <ul>
@@ -17,7 +22,7 @@ export default function TodoDisplayed({data,editToDoItem,editToDOItemText,saveEd
 :  
  ( <>{item.name}  
      <button onClick={()=>editToDoItem(item.id)}>Edit</button>
-    <button> Delete</button>
+    <button onClick ={()=>deleteTodo(item.id)}> Delete</button>
         </>  
   )
 }
