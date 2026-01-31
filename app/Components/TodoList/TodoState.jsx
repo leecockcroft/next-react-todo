@@ -7,7 +7,9 @@ export default function TodoState() {
 const [todoState, setTodoState] = useState([])
 
 const [todoDetails,settodoDetails]=useState({
-  getFirstInput:""
+  getFirstInput:"",
+  enterEditToDoMode:false,
+  editInput:""
 })
 
 const getData = async()=>{
@@ -15,7 +17,7 @@ const getData = async()=>{
   const res = await data.json()
  
 setTodoState(res)
-console.log('datdda',res)
+
 
 }
 
@@ -38,7 +40,6 @@ useEffect(()=>{
   
 },[])
 
- console.log('dataafter',todoState)
 const getTodoInput = (e)=>{
   console.log(e.target.value)
   settodoDetails(prev => ({...prev,getFirstInput:e.target.value}))
@@ -47,17 +48,56 @@ const getTodoInput = (e)=>{
 
 
 const submitTodo=()=>{
-  setTodoState(prev =>[...prev, {id:Date.now(),name:todoDetails.getFirstInput} ])
-  sendData( Date.now(),todoDetails.getFirstInput)
+  const id = Date.now()
+  setTodoState(prev =>[...prev, {id,name:todoDetails.getFirstInput,edit:false} ])
+  sendData( id,todoDetails.getFirstInput)
+
 
 }
+//spread array ...prev when adding gto array. ...item inside map spread the object
+
+// edit mode
+
+const editToDoItem = (id)=>{
+  setTodoState( todoState.map((item,index)=>(
+
+    item.id === id ? {...item,edit:true}  : item
+  )))
+
+ console.log(todoState)
+
+}
+
+const editToDOItemText=(e)=>{
+  console.log(e.target.value)
+
+  settodoDetails(prev => ({...prev,editInput:e.target.value }))
+console.log(todoDetails)
+}
+
+const saveEditedToDo = (id)=>{
+
+setTodoState(todoState.map((item,index)=>(
+
+item.id===id ? {...item, name:todoDetails.editInput,edit:false} : item
+
+)))
+
+console.log('done')
+}
+
+
   return (
     <div>
       <TodoInput 
       getTodoInput={getTodoInput}
       submitTodo={submitTodo}/>
 
-      <TodoDisplayed data={todoState}/>
+      <TodoDisplayed
+       data={todoState}
+       editToDoItem={editToDoItem}
+       editToDOItemText={editToDOItemText}
+       saveEditedToDo={saveEditedToDo}/>
     </div>
   );
 }

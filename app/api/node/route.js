@@ -32,3 +32,10 @@ export async function POST(response){
 
 
 }
+
+export async function PUT(){
+
+
+
+    
+}
